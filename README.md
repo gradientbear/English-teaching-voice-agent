@@ -99,8 +99,8 @@ The frontend is configured to use environment variables for Vapi credentials:
 
 | Variable | Description | Example |
 |----------|-------------|---------|
-| `REACT_APP_VAPI_API_KEY` | Your Vapi API key | `c0abe865-469a-459a-a2f3-04676e6119c3` |
-| `REACT_APP_VAPI_ASSISTANT_ID` | Your assistant ID | `8eef9b82-8252-4ca6-a786-1deeb70c93c6` |
+| `REACT_APP_VAPI_API_KEY` | Your Vapi API key | `xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx` |
+| `REACT_APP_VAPI_ASSISTANT_ID` | Your assistant ID | `xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx` |
 | `REACT_APP_VAPI_BASE_URL` | Vapi API base URL | `https://api.vapi.ai` |
 
 ## Usage

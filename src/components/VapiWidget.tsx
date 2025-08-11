@@ -63,6 +63,7 @@ const VapiWidget: React.FC<VapiWidgetProps> = ({
 
   const startCall = () => {
     if (vapi) {
+      console.log('Starting call to assistant:', assistantId, apiKey);
       vapi.start(assistantId);
     }
   };
