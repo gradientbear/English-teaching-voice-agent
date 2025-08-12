@@ -59,14 +59,13 @@ const VapiWidget: React.FC<VapiWidgetProps> = ({
     });
 
     vapiInstance.on('message', (message) => {
-      console.log('Message:', message);
       if (message.type === 'transcript') {
         setTranscript(prev => [...prev, {
           role: message.role,
           text: message.transcript
         }]);
       }
-    });
+    });;
 
     vapiInstance.on('error', (error) => {
       console.error('Vapi error:', error);
