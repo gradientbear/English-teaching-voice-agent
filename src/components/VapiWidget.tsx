@@ -76,129 +76,227 @@ const VapiWidget: React.FC<VapiWidgetProps> = ({
 
   const endCall = () => {
     if (vapi) {
-      vapi.stop();
+      if (vapi) {
+        vapi.stop();
+      }
     }
   };
 
   return (
     <div style={{
-      position: 'fixed',
-      bottom: '24px',
-      right: '24px',
-      zIndex: 1000,
-      fontFamily: 'Arial, sans-serif'
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      fontFamily: 'Arial, sans-serif',
+      display: 'flex',
+      flexDirection: 'column'
     }}>
-      {!isConnected ? (
-        <button
-          onClick={startCall}
-          style={{
-            background: '#12A594',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '50px',
-            padding: '16px 24px',
-            fontSize: '16px',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            boxShadow: '0 4px 12px rgba(18, 165, 148, 0.3)',
-            transition: 'all 0.3s ease',
-          }}
-          onMouseOver={(e) => {
-            e.currentTarget.style.transform = 'translateY(-2px)';
-            e.currentTarget.style.boxShadow = '0 6px 16px rgba(18, 165, 148, 0.4)';
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = '0 4px 12px rgba(18, 165, 148, 0.3)';
-          }}
-        >
-          🎤 Talk to Assistant
-        </button>
-      ) : (
+      {/* Header */}
+      <div style={{
+        background: '#fff',
+        padding: '20px',
+        boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+        textAlign: 'center'
+      }}>
+        <h1 style={{
+          margin: '0 0 8px 0',
+          color: '#333',
+          fontSize: '28px',
+          fontWeight: 'bold'
+        }}>
+          English Teaching Voice Agent
+        </h1>
+        <p style={{
+          margin: '0',
+          color: '#666',
+          fontSize: '16px'
+        }}>
+          Practice English with your AI tutor powered by Vapi
+        </p>
+      </div>
+
+      {/* Main Chat Area */}
+      <div style={{
+        flex: 1,
+        padding: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        maxWidth: '800px',
+        margin: '0 auto',
+        width: '100%'
+      }}>
+        {/* Messages Display */}
         <div style={{
+          flex: 1,
           background: '#fff',
           borderRadius: '12px',
           padding: '20px',
-          width: '320px',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
-          border: '1px solid #e1e5e9'
+          marginBottom: '20px',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+          overflowY: 'auto',
+          minHeight: '400px'
         }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: '16px'
-          }}>
+          {transcript.length === 0 ? (
             <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px'
+              textAlign: 'center',
+              padding: '40px 20px',
+              color: '#666'
             }}>
               <div style={{
-                width: '12px',
-                height: '12px',
-                borderRadius: '50%',
-                background: isSpeaking ? '#ff4444' : '#12A594',
-                animation: isSpeaking ? 'pulse 1s infinite' : 'none'
-              }}></div>
-              <span style={{ fontWeight: 'bold', color: '#333' }}>
-                {isSpeaking ? 'Assistant Speaking...' : 'Listening...'}
-              </span>
-            </div>
-            <button
-              onClick={endCall}
-              style={{
-                background: '#ff4444',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '6px',
-                padding: '6px 12px',
-                fontSize: '12px',
-                cursor: 'pointer'
-              }}
-            >
-              End Call
-            </button>
-          </div>
-          
-          <div style={{
-            maxHeight: '200px',
-            overflowY: 'auto',
-            marginBottom: '12px',
-            padding: '8px',
-            background: '#f8f9fa',
-            borderRadius: '8px'
-          }}>
-            {transcript.length === 0 ? (
-              <p style={{ color: '#666', fontSize: '14px', margin: 0 }}>
-                Conversation will appear here...
+                fontSize: '48px',
+                marginBottom: '16px'
+              }}>
+                🎤
+              </div>
+              <h3 style={{
+                margin: '0 0 8px 0',
+                color: '#333',
+                fontSize: '20px'
+              }}>
+                Start Your English Practice
+              </h3>
+              <p style={{
+                margin: '0',
+                fontSize: '16px',
+                lineHeight: '1.5'
+              }}>
+                Click the button below to begin speaking with your AI English tutor. 
+                Your conversation will appear here as you practice.
               </p>
-            ) : (
-              transcript.map((msg, i) => (
+            </div>
+          ) : (
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '16px'
+            }}>
+              {transcript.map((msg, i) => (
                 <div
                   key={i}
                   style={{
-                    marginBottom: '8px',
-                    textAlign: msg.role === 'user' ? 'right' : 'left'
+                    display: 'flex',
+                    justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start'
                   }}
                 >
-                  <span style={{
-                    background: msg.role === 'user' ? '#12A594' : '#333',
-                    color: '#fff',
-                    padding: '8px 12px',
-                    borderRadius: '12px',
-                    display: 'inline-block',
-                    fontSize: '14px',
-                    maxWidth: '80%'
+                  <div style={{
+                    background: msg.role === 'user' ? '#12A594' : '#f0f0f0',
+                    color: msg.role === 'user' ? '#fff' : '#333',
+                    padding: '12px 16px',
+                    borderRadius: '18px',
+                    maxWidth: '70%',
+                    wordWrap: 'break-word',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                    border: msg.role === 'assistant' ? '1px solid #e0e0e0' : 'none'
                   }}>
-                    {msg.text}
-                  </span>
+                    <div style={{
+                      fontSize: '16px',
+                      lineHeight: '1.4'
+                    }}>
+                      {msg.text}
+                    </div>
+                    <div style={{
+                      fontSize: '12px',
+                      marginTop: '8px',
+                      opacity: 0.7,
+                      textAlign: msg.role === 'user' ? 'right' : 'left'
+                    }}>
+                      {msg.role === 'user' ? 'You' : 'Assistant'}
+                    </div>
+                  </div>
                 </div>
-              ))
-            )}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
-      )}
+
+        {/* Control Buttons */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '16px'
+        }}>
+          {!isConnected ? (
+            <button
+              onClick={startCall}
+              style={{
+                background: '#12A594',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '50px',
+                padding: '16px 32px',
+                fontSize: '18px',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                boxShadow: '0 4px 20px rgba(18, 165, 148, 0.3)',
+                transition: 'all 0.3s ease',
+                minWidth: '200px'
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 6px 25px rgba(18, 165, 148, 0.4)';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 20px rgba(18, 165, 148, 0.3)';
+              }}
+            >
+              🎤 Start English Practice
+            </button>
+          ) : (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '16px',
+              background: '#fff',
+              padding: '16px 24px',
+              borderRadius: '12px',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+            }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px'
+              }}>
+                <div style={{
+                  width: '16px',
+                  height: '16px',
+                  borderRadius: '50%',
+                  background: isSpeaking ? '#ff4444' : '#12A594',
+                  animation: isSpeaking ? 'pulse 1s infinite' : 'none'
+                }}></div>
+                <span style={{ 
+                  fontWeight: 'bold', 
+                  color: '#333',
+                  fontSize: '16px'
+                }}>
+                  {isSpeaking ? 'Assistant Speaking...' : 'Listening...'}
+                </span>
+              </div>
+              <button
+                onClick={endCall}
+                style={{
+                  background: '#ff4444',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '12px 20px',
+                  fontSize: '14px',
+                  cursor: 'pointer',
+                  fontWeight: 'bold',
+                  transition: 'all 0.2s ease'
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.background = '#e63939';
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.background = '#ff4444';
+                }}
+              >
+                End Session
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
       
       <style>{`
         @keyframes pulse {
