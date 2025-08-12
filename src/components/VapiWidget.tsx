@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Vapi from '@vapi-ai/web';
 
 interface VapiWidgetProps {
@@ -16,6 +16,21 @@ const VapiWidget: React.FC<VapiWidgetProps> = ({
   const [isConnected, setIsConnected] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [transcript, setTranscript] = useState<Array<{role: string, text: string}>>([]);
+  
+  // Add ref for the messages container (not the page)
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+
+  // Function to scroll to bottom of messages container only
+  const scrollToBottom = () => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
+  };
+
+  // Auto-scroll when transcript changes
+  useEffect(() => {
+    scrollToBottom();
+  }, [transcript]);
 
   useEffect(() => {
     const vapiInstance = new Vapi(apiKey);
@@ -44,6 +59,7 @@ const VapiWidget: React.FC<VapiWidgetProps> = ({
     });
 
     vapiInstance.on('message', (message) => {
+      console.log('Message:', message);
       if (message.type === 'transcript') {
         setTranscript(prev => [...prev, {
           role: message.role,
@@ -124,17 +140,20 @@ const VapiWidget: React.FC<VapiWidgetProps> = ({
         margin: '0 auto',
         width: '100%'
       }}>
-        {/* Messages Display */}
-        <div style={{
-          flex: 1,
-          background: '#fff',
-          borderRadius: '12px',
-          padding: '20px',
-          marginBottom: '20px',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-          overflowY: 'auto',
-          minHeight: '400px'
-        }}>
+        {/* Messages Display - Fixed height with scrollbar */}
+        <div 
+          ref={messagesContainerRef}
+          style={{
+            height: '500px', // Fixed height instead of flex: 1
+            background: '#fff',
+            borderRadius: '12px',
+            padding: '20px',
+            marginBottom: '20px',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+            overflowY: 'auto',
+            overflowX: 'hidden' // Prevent horizontal scrollbar
+          }}
+        >
           {transcript.length === 0 ? (
             <div style={{
               textAlign: 'center',
