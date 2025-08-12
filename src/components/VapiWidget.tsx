@@ -54,6 +54,13 @@ const VapiWidget: React.FC<VapiWidgetProps> = ({
 
     vapiInstance.on('error', (error) => {
       console.error('Vapi error:', error);
+    
+      if (error.errorMsg === 'Meeting has ended') {
+        setIsConnected(false);
+        setIsSpeaking(false);
+        // Optional: show a UI alert or restart button
+        alert('The meeting has ended. Please start a new session.');
+      }
     });
 
     return () => {
@@ -63,7 +70,6 @@ const VapiWidget: React.FC<VapiWidgetProps> = ({
 
   const startCall = () => {
     if (vapi) {
-      console.log('Starting call to assistant:', assistantId, apiKey);
       vapi.start(assistantId);
     }
   };
@@ -207,8 +213,3 @@ const VapiWidget: React.FC<VapiWidgetProps> = ({
 
 export default VapiWidget;
 
-// Usage in your app:
-// <VapiWidget 
-//   apiKey="your_public_api_key" 
-//   assistantId="your_assistant_id" 
-// />
